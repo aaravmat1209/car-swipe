@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import "./App.css";
 
@@ -7,13 +7,6 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [viewRankings, setViewRankings] = useState(false);
   const [rankings, setRankings] = useState([]);
-
-  useEffect(() => {
-    // Only fetch a new car if we're in swipe mode
-    if (!viewRankings) {
-      fetchRandomCar();
-    }
-  }, [viewRankings]);
 
   // Fetch a random car from the backend
   const fetchRandomCar = async () => {
@@ -35,7 +28,7 @@ function App() {
         car_id: car.id,
         direction,
       });
-      // Fetch the next car
+      // Fetch the next car automatically after a swipe
       fetchRandomCar();
     } catch (error) {
       console.error("Error processing swipe:", error);
@@ -61,7 +54,15 @@ function App() {
           {/* Card Stack */}
           <div className="card-stack">
             <div className="card card-behind">Behind</div>
-            <div className="card card-front">
+            <div
+              className="card card-front"
+              onClick={() => {
+                // Only fetch a car if we don't already have one or we're not loading
+                if (!car && !loading) {
+                  fetchRandomCar();
+                }
+              }}
+            >
               {loading ? (
                 <div style={{ fontSize: "1rem" }}>Loading...</div>
               ) : car ? (
@@ -76,6 +77,7 @@ function App() {
                   }}
                 />
               ) : (
+                // If there's no car, show a prompt
                 <div>Click me</div>
               )}
             </div>
@@ -83,10 +85,16 @@ function App() {
 
           {/* Swipe Buttons (X & Heart) */}
           <div className="bottom-buttons">
-            <button className="circle-btn btn-x" onClick={() => handleSwipe("left")}>
+            <button
+              className="circle-btn btn-x"
+              onClick={() => handleSwipe("left")}
+            >
               X
             </button>
-            <button className="circle-btn btn-heart" onClick={() => handleSwipe("right")}>
+            <button
+              className="circle-btn btn-heart"
+              onClick={() => handleSwipe("right")}
+            >
               ♥
             </button>
           </div>
