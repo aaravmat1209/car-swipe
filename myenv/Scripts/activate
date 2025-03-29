@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\aarav\OneDrive\Desktop\Projects\Backend\Car_Swipe\myenv"
+VIRTUAL_ENV="C:\Users\aarav\OneDrive\Desktop\Projects\Backend\Car_Swipe\car-swipe\myenv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

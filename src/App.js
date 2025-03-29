@@ -57,8 +57,11 @@ function App() {
             <div
               className="card card-front"
               onClick={() => {
-                // Only fetch a car if we don't already have one or we're not loading
+                // Automatically fetch a car if one isn't already loaded
                 if (!car && !loading) {
+                  fetchRandomCar();
+                } else if (car && !loading) {
+                  // Fetch next car if there's already a car loaded
                   fetchRandomCar();
                 }
               }}
@@ -70,10 +73,10 @@ function App() {
                   src={car.image_url}
                   alt={car.name}
                   style={{
-                    width: "300%",
-                    height: "300%",
+                    width: "100%", // Fit image width within the card
+                    height: "100%", // Fit image height within the card
                     borderRadius: "17px",
-                    objectFit: "cover",
+                    objectFit: "contain", // Ensure the image is contained
                   }}
                 />
               ) : (
@@ -115,13 +118,26 @@ function App() {
             </button>
           </div>
 
-          <ul style={{ marginTop: "1rem" }}>
-            {rankings.map((r, index) => (
-              <li key={index}>
-                {r.name}: {r.score}
-              </li>
-            ))}
-          </ul>
+          {/* Rankings Table */}
+          <div className="card_for_rankings">
+            <div className="card__title">Rankings</div>
+           <table className="ranking-table">
+              <thead>
+                <tr>
+                  <th>Car</th>
+                  <th>Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rankings.map((r, index) => (
+                  <tr key={index}>
+                    <td>{r.name}</td>
+                    <td>{r.score}</td>
+                  </tr>
+                ))}
+              </tbody>
+           </table>
+          </div>
         </>
       )}
     </div>
